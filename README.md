@@ -11,7 +11,18 @@ This function library contains functions to:
 XQuery
 ----
 
-This is some information about the XQuery 
+Import the isbn.xqy module into the desired main module or library module of your XQuery code base: 
+
+    xquery version "1.0-ml";
+    
+    import module namespace isbn = "http://www.example.org/xquery/functions/isbn" at "/xqy/modules/isbn.xqy";
+
+XQuery Unit Tests
+----
+
+The XQuery has been tested using xray.  
+The test module in included.  
+
 
 XSLT
 ----
