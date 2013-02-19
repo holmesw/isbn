@@ -1,7 +1,7 @@
 XQuery and XSLT ISBN Function Library
 ====
 
-This functiomn library contains functions to: 
+This function library contains functions to: 
 *   Format ISBNs
 *   Remove formatting from ISBNs
 *   Validate ISBN-10 and ISBN-13 check digits
