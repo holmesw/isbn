@@ -78,10 +78,10 @@ The XQuery has been tested using xray.
 The test module in included.  
 
 
-XSLT
+XSLT 2.0
 ----
 
-To use the XSLT functions, import the ISBN XSLT function library (with the ISBN XSLT function namespace) into your style sheet.  
+To use the XSLT 2.0 functions, import the ISBN XSLT 2.0 function library (with the ISBN XSLT function namespace) into your style sheet.  
 Example: 
 
     <?xml version="1.0" encoding="UTF-8"?>
@@ -92,4 +92,56 @@ Example:
         version="2.0">
         
         <xsl:include href="/xsl/isbn.xsl"/>
+    </xsl:stylesheet>
+
+Here is a more detailed example: 
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <xsl:stylesheet 
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:isbn="http://github.com/holmesw/isbn" 
+        exclude-result-prefixes="isbn" 
+        version="2.0">
+    
+        <xsl:include href="/xsl/isbn.xsl"/>
+        
+        <xsl:template match="isbns">
+            <isbns><xsl:apply-templates /></isbns>
+        </xsl:template>
+        
+        <xsl:template match="isbn13format">
+            <isbn-13-format><xsl:sequence select="isbn:format-isbn(.)" /></isbn-13-format>
+        </xsl:template>
+        
+        <xsl:template match="isbn13prepare">
+            <isbn-13-prepare><xsl:sequence select="isbn:prepare-isbn(.)" /></isbn-13-prepare>
+        </xsl:template>
+        
+        <xsl:template match="isbn13checkdigit">
+            <isbn-13-check-digit><xsl:sequence select="isbn:isbn-13-check-digit(.)" /></isbn-13-check-digit>
+        </xsl:template>
+        
+        <xsl:template match="isbn13toisbn10">
+            <isbn-13-to-isbn-10><xsl:sequence select="isbn:isbn13-to-isbn10(.)" /></isbn-13-to-isbn-10>
+        </xsl:template>
+        
+        <xsl:template match="isbn10toisbn13">
+            <isbn-10-to-isbn-13><xsl:sequence select="isbn:isbn10-to-isbn13(.)" /></isbn-10-to-isbn-13>
+        </xsl:template>
+        
+        <xsl:template match="isbn10format">
+            <isbn-10-format><xsl:sequence select="isbn:format-isbn(.)" /></isbn-10-format>
+        </xsl:template>
+        
+        <xsl:template match="isbn10prepare">
+            <isbn-10-prepare><xsl:sequence select="isbn:prepare-isbn(.)" /></isbn-10-prepare>
+        </xsl:template>
+        
+        <xsl:template match="isbn10checkdigit">
+            <isbn-10-check-digit><xsl:sequence select="isbn:isbn-10-check-digit(.)" /></isbn-10-check-digit>
+        </xsl:template>
+        
+        <xsl:template match="element()" priority="-5">
+            <xsl:copy-of select="." />
+        </xsl:template>
     </xsl:stylesheet>
