@@ -8,7 +8,7 @@
  :)
 xquery version "1.0-ml";
 
-module namespace isbn = "http://www.example.org/xquery/functions/isbn";
+module namespace isbn = "http://github.com/holmesw/isbn";
 
 (:~
  : format ISBN
