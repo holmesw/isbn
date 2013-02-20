@@ -83,7 +83,7 @@ ISBN-13 check digits are calculated as follows:
 
     m = ( [a b c d e f g h i j k l] * [1 3 1 3 1 3 1 3 1 3 1 3] ) mod 10
 
-The above examples came from the [ISBN Check Digit Calculator](http://www.hahnlibrary.net/libraries/isbncalc.html)
+The above examples came from this [hahnlibrary ISBN Check Digit Calculator](http://www.hahnlibrary.net/libraries/isbncalc.html) (that was developed by someone else)
 
 Here is an example of how to calculate the check digit for an ISBN (10 or 13 digit): 
 
