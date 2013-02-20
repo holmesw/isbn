@@ -4,7 +4,7 @@
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:fn="http://www.w3.org/2005/xpath-functions"
-    xmlns:isbn="http://github.com/holmesw/isbn/" 
+    xmlns:isbn="http://github.com/holmesw/isbn" 
     extension-element-prefixes=""
     exclude-result-prefixes="xsi xs fn isbn" 
     version="2.0">
