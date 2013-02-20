@@ -1,4 +1,4 @@
-#XQuery and XSLT ISBN Function Library#
+#XQuery 1.0-ml and XSLT 2.0 ISBN Function Library#
 
 ISBNs (or International Standard Book Numbers), are used to identify books.  
 
