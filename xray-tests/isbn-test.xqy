@@ -2,7 +2,7 @@ xquery version "1.0-ml";
 
 module namespace test = "http://github.com/robwhitby/xray/test";
 
-import module namespace isbn = "http://github.com/holmesw/isbn/" at "/xqy/modules/isbn.xqy";
+import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
 import module namespace assert = "http://github.com/robwhitby/xray/assertions" at "/xray/src/assertions.xqy";
 
 declare function isbn-format-isbn13-prepared() {
