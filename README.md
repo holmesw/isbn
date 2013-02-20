@@ -1,5 +1,7 @@
 #XQuery and XSLT ISBN Function Library#
 
+ISBNs (or International Standard Book Numbers), are used to identify books.  
+
 This function library contains functions to: 
 *   Format ISBNs
 *   Remove formatting from ISBNs
@@ -15,7 +17,17 @@ To use the ISBN XQuery functions, first import the isbn.xqy module into the desi
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
 
-###Format ISBNs###
+###Format ISBN###
+
+An **ISBN-10** is formatted in the following way: 
+x-xxxxx-xxx-x
+
+This means that 123456789X is formatted as: 1-23456-789-X
+
+An **ISBN-13** is formatted in the following way: 
+xxx-x-xxxxx-xxx-x 
+
+This means that 9781234567897 is formatted as: 978-1-23456-789-7
 
 Here is an example of how to format an ISBN (10 or 13 digit): 
 
@@ -24,8 +36,40 @@ Here is an example of how to format an ISBN (10 or 13 digit):
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
     
     isbn:format-isbn("9781234567897"), 
+    (: the output of the above function call is: "978-1-23456-789-7" :)
+    
+    isbn:format-isbn("978-1-23456-789-7"), 
+    (: the output of the above function call is: "978-1-23456-789-7" :)
+    
     isbn:format-isbn("123456789X"), 
+    (: the output of the above function call is: "1-23456-789-X" :)
+    
     isbn:format-isbn("1-23456-789-X")
+    (: the output of the above function call is: "1-23456-789-X" :)
+
+###Remove ISBN Formatting###
+
+This function acts to **remove** non alpha-numeric characters from the ISBN, and will thus remove any formartting.   
+
+This is helpful when calculating the check digit.  
+
+Here is an example of how to remove the formatting for an ISBN (10 or 13 digit): 
+
+    xquery version "1.0-ml";
+    
+    import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
+    
+    isbn:prepare-isbn("9781234567897"), 
+    (: the output of the above function call is: "9781234567897" :)
+    
+    isbn:prepare-isbn("978-1-23456-789-7"), 
+    (: the output of the above function call is: "9781234567897" :)
+    
+    isbn:prepare-isbn("123456789X"), 
+    (: the output of the above function call is: "123456789X" :)
+    
+    isbn:prepare-isbn("1-23456-789-X")
+    (: the output of the above function call is: "123456789X" :)
 
 ###XQuery Unit Tests###
 
