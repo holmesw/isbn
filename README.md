@@ -1,5 +1,4 @@
-XQuery and XSLT ISBN Function Library
-====
+#XQuery and XSLT ISBN Function Library#
 
 This function library contains functions to: 
 *   Format ISBNs
@@ -8,8 +7,7 @@ This function library contains functions to:
 *   Convert ISBN-10 to ISBN-13
 *   Convert ISBN-13 to ISBN-10
 
-XQuery
-----
+##XQuery##
 
 To use the ISBN XQuery functions, first import the isbn.xqy module into the desired main module or library module of your XQuery code base: 
 
@@ -17,8 +15,20 @@ To use the ISBN XQuery functions, first import the isbn.xqy module into the desi
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
 
-XQuery Unit Tests
-----
+###Format ISBNs###
+
+Here is an example of how to format an ISBN (10 or 13 digit): 
+
+    xquery version "1.0-ml";
+    
+    import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
+    
+    isbn:format-isbn("9781234567897"), 
+    isbn:format-isbn("123456789X"), 
+    isbn:format-isbn("1-23456-789-X")
+
+###XQuery Unit Tests###
+
 
 The XQuery has been tested using xray.  
 The test module in included.  
