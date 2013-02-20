@@ -11,7 +11,7 @@ This function library contains functions to:
 XQuery
 ----
 
-Import the isbn.xqy module into the desired main module or library module of your XQuery code base: 
+To use the ISBN XQuery functions, first import the isbn.xqy module into the desired main module or library module of your XQuery code base: 
 
     xquery version "1.0-ml";
     
