@@ -71,6 +71,68 @@ Here is an example of how to remove the formatting for an ISBN (10 or 13 digit):
     isbn:prepare-isbn("1-23456-789-X")
     (: the output of the above function call is: "123456789X" :)
 
+###Calculate ISBN Check Digits###
+
+ISBN **check digits** are used to prevent transcription errors.  
+
+ISBN-10 check digits are calculated as follows: 
+
+    j = ( [a b c d e f g h i] * [1 2 3 4 5 6 7 8 9] ) mod 11 
+
+ISBN-13 check digits are calculated as follows: 
+
+    m = ( [a b c d e f g h i j k l] * [1 3 1 3 1 3 1 3 1 3 1 3] ) mod 10
+
+Here is an example of how to calculate the check digit for an ISBN (10 or 13 digit): 
+
+    xquery version "1.0-ml";
+    
+    import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
+    
+    isbn:isbn-13-check-digit("9781234567897"), 
+    (: the output of the above function call is: "7" :)
+    
+    isbn:isbn-13-check-digit("978-1-23456-789-7"), 
+    (: the output of the above function call is: "7" :)
+    
+    isbn:isbn-10-check-digit("123456789X"), 
+    (: the output of the above function call is: "X" :)
+    
+    isbn:isbn-10-check-digit("1-23456-789-X")
+    (: the output of the above function call is: "X" :)
+
+###Convert ISBN-10 to ISBN-13###
+
+The **ISBN-13** version of an ISBN-10 is "978", then take the first 9 digits of the ISBN-10, finally add the ISBN-13 check digit.  
+
+Here is an example of how to convert ISBN-10 to ISBN-13: 
+
+    xquery version "1.0-ml";
+    
+    import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
+    
+    isbn:isbn10-to-isbn13("123456789X"), 
+    (: the output of the above function call is: "978-1-23456-789-7" :)
+    
+    isbn:isbn10-to-isbn13("1-23456-789-X")
+    (: the output of the above function call is: "978-1-23456-789-7" :)
+
+###Convert ISBN-13 to ISBN-10###
+
+To convert ISBN-13 to **ISBN-10**, first remove the first three digits (usually "978"), then take the next 9 digits of the ISBN-13, finally add the ISBN-10 check digit.  
+
+Here is an example of how to convert ISBN-13 to ISBN-10: 
+
+    xquery version "1.0-ml";
+    
+    import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
+    
+    isbn:isbn13-to-isbn10("9781234567897"), 
+    (: the output of the above function call is: "1-23456-789-X" :)
+    
+    isbn:isbn13-to-isbn10("978-1-23456-789-7")
+    (: the output of the above function call is: "1-23456-789-X" :)
+
 ###XQuery Unit Tests###
 
 
@@ -145,3 +207,47 @@ Here is a more detailed example:
             <xsl:copy-of select="." />
         </xsl:template>
     </xsl:stylesheet>
+
+The above XSLT, can be used to transform this XML document: 
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <isbns>
+        <isbn13format>9781234567897</isbn13format>
+        <isbn13format>978-1-23456-789-7</isbn13format>
+        <isbn13prepare>9781234567897</isbn13prepare>
+        <isbn13prepare>978-1-23456-789-7</isbn13prepare>
+        <isbn13checkdigit>9781234567897</isbn13checkdigit>
+        <isbn13checkdigit>978-1-23456-789-7</isbn13checkdigit>
+        <isbn13toisbn10>9781234567897</isbn13toisbn10>
+        <isbn13toisbn10>978-1-23456-789-7</isbn13toisbn10>
+        <isbn10format>123456789X</isbn10format>
+        <isbn10format>1-23456-789-X</isbn10format>
+        <isbn10prepare>123456789X</isbn10prepare>
+        <isbn10prepare>1-23456-789-X</isbn10prepare>
+        <isbn10checkdigit>123456789X</isbn10checkdigit>
+        <isbn10checkdigit>1-23456-789-X</isbn10checkdigit>
+        <isbn10toisbn13>123456789X</isbn10toisbn13>
+        <isbn10toisbn13>1-23456-789-X</isbn10toisbn13>
+    </isbns>
+
+Into this XML document: 
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <isbns>
+        <isbn-13-format>978-1-23456-789-7</isbn-13-format>
+        <isbn-13-format>978-1-23456-789-7</isbn-13-format>
+        <isbn-13-prepare>9781234567897</isbn-13-prepare>
+        <isbn-13-prepare>9781234567897</isbn-13-prepare>
+        <isbn-13-check-digit>7</isbn-13-check-digit>
+        <isbn-13-check-digit>7</isbn-13-check-digit>
+        <isbn-13-to-isbn-10>1-23456-789-X</isbn-13-to-isbn-10>
+        <isbn-13-to-isbn-10>1-23456-789-X</isbn-13-to-isbn-10>
+        <isbn-10-format>1-23456-789-X</isbn-10-format>
+        <isbn-10-format>1-23456-789-X</isbn-10-format>
+        <isbn-10-prepare>123456789X</isbn-10-prepare>
+        <isbn-10-prepare>123456789X</isbn-10-prepare>
+        <isbn-10-check-digit>X</isbn-10-check-digit>
+        <isbn-10-check-digit>X</isbn-10-check-digit>
+        <isbn-10-to-isbn-13>978-1-23456-789-7</isbn-10-to-isbn-13>
+        <isbn-10-to-isbn-13>978-1-23456-789-7</isbn-10-to-isbn-13>
+    </isbns>
