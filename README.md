@@ -27,7 +27,7 @@ The test module in included.
 XSLT
 ----
 
-To use the XSLT functions, import XSLT function library, and the ISBN XSLT function namespace, into your style sheet.  
+To use the XSLT functions, import the ISBN XSLT function library (with the ISBN XSLT function namespace) into your style sheet.  
 Example: 
 
     <?xml version="1.0" encoding="UTF-8"?>
