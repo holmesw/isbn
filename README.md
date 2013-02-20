@@ -27,4 +27,14 @@ The test module in included.
 XSLT
 ----
 
-This is some information about the XSLT
+To use the XSLT functions, import XSLT function library into your style sheet like this:
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <xsl:stylesheet 
+        xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+        xmlns:isbn="http://www.example.org/xslt/functions/isbn" 
+        exclude-result-prefixes="isbn" 
+        version="2.0">
+        
+        <xsl:include href="/xsl/isbn.xsl"/>
+    </xsl:stylesheet>
