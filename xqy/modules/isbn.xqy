@@ -20,9 +20,10 @@ module namespace isbn = "http://github.com/holmesw/isbn";
  :)
 declare function format-isbn(
     $isbn as xs:string
-) as xs:string? {
+) as xs:string? 
+{
     format-prepared-isbn(
-        prepare-isbn($isbn)
+      prepare-isbn($isbn)
     )
 };
 
@@ -40,12 +41,9 @@ declare function format-isbn(
  :)
 declare function prepare-isbn(
     $isbn as xs:string
-) as xs:string? {
-    fn:replace(
-        $isbn, 
-        "(ISBN)?[^0-9A-Za-z]", 
-        ""
-    )
+) as xs:string? 
+{
+    fn:replace($isbn, "(ISBN)?[^0-9A-Za-z]", "")
 };
 
 (:~
@@ -58,7 +56,8 @@ declare function prepare-isbn(
  :)
 declare private function format-prepared-isbn(
     $isbn as xs:string
-) as xs:string? {
+) as xs:string? 
+{
     xdmp:apply(
         xdmp:function(
             xs:QName(
@@ -88,11 +87,9 @@ declare private function format-isbn-13(
     $isbn as xs:string
 ) as xs:string? {
     (: 13 digit ISBN code :)
-    fn:replace(
-        $isbn, 
-        "(.{3})(.{1})(.{5})(.{3})(.{1})", 
-        "$1-$2-$3-$4-$5"
-    )[fn:starts-with($isbn, "978")]
+    fn:replace($isbn, "(.{3})(.{1})(.{5})(.{3})(.{1})", "$1-$2-$3-$4-$5")[
+        fn:starts-with($isbn, "978")
+    ]
 };
 
 (:~
@@ -105,13 +102,10 @@ declare private function format-isbn-13(
  :)
 declare private function format-isbn-10(
     $isbn as xs:string
-) as xs:string? {
+) as xs:string? 
+{
     (: 10 digit ISBN code :)
-    fn:replace(
-        $isbn, 
-        "(.{1})(.{5})(.{3})(.{1})", 
-        "$1-$2-$3-$4"
-    )
+    fn:replace($isbn, "(.{1})(.{5})(.{3})(.{1})", "$1-$2-$3-$4")
 };
 
 (:~
@@ -124,7 +118,8 @@ declare private function format-isbn-10(
  :)
 declare function isbn13-to-isbn10(
     $isbn as xs:string
-) as xs:string {
+) as xs:string 
+{
     format-isbn(
         fn:concat(
             isbn-9($isbn), 
@@ -145,7 +140,8 @@ declare function isbn13-to-isbn10(
  :)
 declare function isbn10-to-isbn13(
     $isbn as xs:string
-) as xs:string {
+) as xs:string 
+{
     format-isbn(
         fn:concat(
             isbn-12($isbn), 
@@ -168,7 +164,8 @@ declare function isbn10-to-isbn13(
  :)
 declare function isbn-13-check-digit(
     $isbn as xs:string 
-) as xs:string? {
+) as xs:string? 
+{
     isbn-13-check-digit-display(
         10 - math:fmod(
             fn:sum(
@@ -196,11 +193,10 @@ declare function isbn-13-check-digit(
  :)
 declare private function isbn-13-check-digit-display(
     $checkdigit as xs:double 
-) as xs:string? {
-    if ($checkdigit le 9) then
-        fn:string($checkdigit)
-    else
-        "X"
+) as xs:string? 
+{
+    if ($checkdigit le 9) then fn:string($checkdigit)
+    else "X"
 };
 
 (:~
@@ -215,7 +211,8 @@ declare private function isbn-13-check-digit-display(
  :)
 declare function isbn-10-check-digit(
     $isbn as xs:string 
-) as xs:string? {
+) as xs:string? 
+{
     isbn-10-check-digit-display(
         11 - math:fmod(
             fn:sum(
@@ -243,13 +240,11 @@ declare function isbn-10-check-digit(
  :)
 declare private function isbn-10-check-digit-display(
     $checkdigit as xs:double 
-) as xs:string? {
-    if ($checkdigit ge 11) then
-        "0"
-    else if ($checkdigit le 9) then
-        fn:string($checkdigit)
-    else
-        "X"
+) as xs:string? 
+{
+    if ($checkdigit ge 11) then "0"
+    else if ($checkdigit le 9) then fn:string($checkdigit)
+    else "X"
 };
 
 (:~
@@ -262,7 +257,8 @@ declare private function isbn-10-check-digit-display(
  :)
 declare private function isbn-9(
     $isbn as xs:string 
-) as xs:string? {
+) as xs:string? 
+{
     let $isbn as xs:string := 
         validate-isbn-length($isbn)
     return
@@ -283,7 +279,8 @@ declare private function isbn-9(
  :)
 declare private function isbn-12(
     $isbn as xs:string 
-) as xs:string? {
+) as xs:string? 
+{
     let $isbn as xs:string := 
         validate-isbn-length($isbn)
     return
@@ -308,7 +305,8 @@ declare private function isbn-12(
 declare private function isbn-10-apply-check-digit-weights(
     $isbn-chars as xs:string*, 
     $pos as xs:unsignedInt
-) as xs:double {
+) as xs:double 
+{
     if ($pos gt 1) then
         fn:number(
             (
@@ -341,7 +339,8 @@ declare private function isbn-10-apply-check-digit-weights(
 declare private function isbn-13-apply-check-digit-weights(
     $isbn-chars as xs:string*, 
     $pos as xs:unsignedInt
-) as xs:double* {
+) as xs:double* 
+{
    if ($pos gt 1) then
         fn:number(
             (
@@ -374,7 +373,8 @@ declare private function isbn-13-apply-check-digit-weights(
  :)
 declare private function validate-isbn-length(
     $isbn as xs:string
-) as xs:string {
+) as xs:string 
+{
     fn:string(
         prepare-isbn(
             $isbn
@@ -392,7 +392,8 @@ declare private function validate-isbn-length(
  :)
 declare private function split-isbn(
     $isbn as xs:string
-) as xs:string* {
+) as xs:string* 
+{
     let $isbn as xs:string := 
         validate-isbn-length($isbn)
     let $len as xs:unsignedInt := 
