@@ -138,7 +138,7 @@ Here is an example of how to convert ISBN-13 to ISBN-10:
 ###XQuery Unit Tests###
 
 
-The XQuery has been tested using xray.  
+The XQuery has been tested using [xray (by Rob Whitby)](https://github.com/robwhitby/xray).  
 The test module in included.  
 
 
