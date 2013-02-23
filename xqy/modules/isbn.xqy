@@ -3,6 +3,8 @@
  : handle ISBNs
  : 
  : @see http://en.wikipedia.org/wiki/International_Standard_Book_Number
+ : @see http://www.regular-expressions.info/reference.html
+ : 
  : 
  : @author holmesw
  :)
@@ -31,8 +33,6 @@ declare function format-isbn(
  : prepare ISBN
  : remove characters not in 0-9, A-Z or a-z
  : uses a regex to do this
- : 
- : @see http://www.regular-expressions.info/reference.html
  : 
  : @author holmesw
  : 
@@ -77,6 +77,7 @@ declare private function format-prepared-isbn(
 
 (:~
  : format ISBN-13
+ : uses a regex to do this
  : 
  : @author holmesw
  : 
@@ -94,6 +95,7 @@ declare private function format-isbn-13(
 
 (:~
  : format ISBN-10
+ : uses a regex to do this
  : 
  : @author holmesw
  : 
@@ -384,6 +386,7 @@ declare private function validate-isbn-length(
 
 (:~
  : split ISBN into single-length strings
+ : uses a regex to do this
  : 
  : @author holmesw
  : 
