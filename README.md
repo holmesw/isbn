@@ -13,9 +13,11 @@ This function library contains functions to:
 
 To use the ISBN XQuery functions, first import the isbn.xqy module into the desired main module or library module of your XQuery code base: 
 
+```xquery
     xquery version "1.0-ml";
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
+```
 
 ###Format ISBN###
 
@@ -31,6 +33,7 @@ This means that 9781234567897 is formatted as: 978-1-23456-789-7
 
 Here is an example of how to format an ISBN (10 or 13 digit): 
 
+```xquery
     xquery version "1.0-ml";
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
@@ -46,6 +49,7 @@ Here is an example of how to format an ISBN (10 or 13 digit):
     
     isbn:format-isbn("1-23456-789-X")
     (: the output of the above function call is: "1-23456-789-X" :)
+```
 
 ###Remove ISBN Formatting###
 
@@ -55,6 +59,7 @@ This is helpful when calculating the check digit.
 
 Here is an example of how to remove the formatting for an ISBN (10 or 13 digit): 
 
+```xquery
     xquery version "1.0-ml";
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
@@ -70,6 +75,7 @@ Here is an example of how to remove the formatting for an ISBN (10 or 13 digit):
     
     isbn:prepare-isbn("1-23456-789-X")
     (: the output of the above function call is: "123456789X" :)
+```
 
 ###Calculate ISBN Check Digits###
 
@@ -87,6 +93,7 @@ The above examples came from this [hahnlibrary ISBN Check Digit Calculator](http
 
 Here is an example of how to calculate the check digit for an ISBN (10 or 13 digit): 
 
+```xquery
     xquery version "1.0-ml";
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
@@ -102,6 +109,7 @@ Here is an example of how to calculate the check digit for an ISBN (10 or 13 dig
     
     isbn:isbn-10-check-digit("1-23456-789-X")
     (: the output of the above function call is: "X" :)
+```
 
 ###Convert ISBN-10 to ISBN-13###
 
@@ -109,6 +117,7 @@ The **ISBN-13** version of an ISBN-10 is "978", then take the first 9 digits of 
 
 Here is an example of how to convert ISBN-10 to ISBN-13: 
 
+```xquery
     xquery version "1.0-ml";
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
@@ -118,6 +127,7 @@ Here is an example of how to convert ISBN-10 to ISBN-13:
     
     isbn:isbn10-to-isbn13("1-23456-789-X")
     (: the output of the above function call is: "978-1-23456-789-7" :)
+```
 
 ###Convert ISBN-13 to ISBN-10###
 
@@ -125,6 +135,7 @@ To convert ISBN-13 to **ISBN-10**, first remove the first three digits (usually 
 
 Here is an example of how to convert ISBN-13 to ISBN-10: 
 
+```xquery
     xquery version "1.0-ml";
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
@@ -134,6 +145,7 @@ Here is an example of how to convert ISBN-13 to ISBN-10:
     
     isbn:isbn13-to-isbn10("978-1-23456-789-7")
     (: the output of the above function call is: "1-23456-789-X" :)
+```
 
 ###XQuery Unit Tests###
 
@@ -148,6 +160,7 @@ XSLT 2.0
 To use the XSLT 2.0 functions, import the ISBN XSLT 2.0 function library (with the ISBN XSLT function namespace) into your style sheet.  
 Example: 
 
+```xslt
     <?xml version="1.0" encoding="UTF-8"?>
     <xsl:stylesheet 
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -157,9 +170,11 @@ Example:
         
         <xsl:include href="/xsl/isbn.xsl"/>
     </xsl:stylesheet>
+```
 
 Here is a more detailed example: 
 
+```xslt
     <?xml version="1.0" encoding="UTF-8"?>
     <xsl:stylesheet 
         xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
@@ -209,9 +224,11 @@ Here is a more detailed example:
             <xsl:copy-of select="." />
         </xsl:template>
     </xsl:stylesheet>
+```
 
 The above XSLT, can be used to transform this XML document: 
 
+```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <isbns>
         <isbn13format>9781234567897</isbn13format>
@@ -231,9 +248,11 @@ The above XSLT, can be used to transform this XML document:
         <isbn10toisbn13>123456789X</isbn10toisbn13>
         <isbn10toisbn13>1-23456-789-X</isbn10toisbn13>
     </isbns>
-
+```
 Into this XML document: 
 
+
+```xml
     <?xml version="1.0" encoding="UTF-8"?>
     <isbns>
         <isbn-13-format>978-1-23456-789-7</isbn-13-format>
@@ -253,3 +272,4 @@ Into this XML document:
         <isbn-10-to-isbn-13>978-1-23456-789-7</isbn-10-to-isbn-13>
         <isbn-10-to-isbn-13>978-1-23456-789-7</isbn-10-to-isbn-13>
     </isbns>
+```
