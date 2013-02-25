@@ -170,7 +170,7 @@ declare function isbn-13-check-digit(
 ) as xs:string? 
 {
     isbn-13-check-digit-display(
-        10 - math:fmod(
+        10 - (
             fn:sum(
                 isbn-13-apply-check-digit-weights(
                     split-isbn(
@@ -178,10 +178,9 @@ declare function isbn-13-check-digit(
                             $isbn
                         )
                     ), 
-                    12
+                    xs:unsignedInt(12)
                 )
-            ), 
-            10
+            ) mod 10
         )
     )
 };
@@ -217,7 +216,7 @@ declare function isbn-10-check-digit(
 ) as xs:string? 
 {
     isbn-10-check-digit-display(
-        11 - math:fmod(
+        11 - (
             fn:sum(
                 isbn-10-apply-check-digit-weights(
                     split-isbn(
@@ -225,10 +224,9 @@ declare function isbn-10-check-digit(
                             $isbn
                         )
                     ), 
-                    9
+                    xs:unsignedInt(9)
                 )
-            ), 
-            11
+            ) mod 11
         )
     )
 };
@@ -321,7 +319,7 @@ declare private function isbn-10-apply-check-digit-weights(
         ) + 
         isbn-10-apply-check-digit-weights(
             $isbn-chars, 
-            ($pos - 1)
+            xs:unsignedInt($pos - 1)
         )
     else
         fn:number(
@@ -351,11 +349,11 @@ declare private function isbn-13-apply-check-digit-weights(
             )[xs:integer($pos)]
         ) * 
         (
-            (3, 1)[xs:integer(math:fmod($pos, 2) + 1)][1]
+            (3, 1)[xs:integer(($pos mod 2) + 1)][1]
         ) + 
         isbn-13-apply-check-digit-weights(
             $isbn-chars, 
-            ($pos - 1)
+            xs:unsignedInt($pos - 1)
         )
     else
         fn:number(
