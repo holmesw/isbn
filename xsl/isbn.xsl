@@ -224,43 +224,16 @@
         </xsl:if>
     </xsl:function>
     
+    <!-- http://www.xsltfunctions.com/xsl/functx_chars.html -->
     <xsl:function name="isbn:split-isbn" as="xs:string*">
         <xsl:param name="isbn" as="xs:string" />
-        <xsl:variable name="prepared-isbn" as="xs:string">
-            <xsl:sequence select="isbn:validate-isbn-length($isbn)" />
-        </xsl:variable>
-        <xsl:variable name="prepared-isbn-len" as="xs:unsignedInt">
-            <xsl:sequence select="fn:string-length($prepared-isbn)" />
-        </xsl:variable>
-        <xsl:variable name="replace-str-1" as="xs:string">
-            <xsl:choose>
-                <xsl:when test="$prepared-isbn-len = (9, 10)">
-                    (.{1})(.{1})(.{1})(.{1})(.{1})(.{1})(.{1})(.{1})(.{1})
-                </xsl:when>
-                <xsl:otherwise>
-                    (.{1})(.{1})(.{1})(.{1})(.{1})(.{1})(.{1})(.{1})(.{1})(.{1})(.{1})(.{1})
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:variable name="replace-str-2" as="xs:string">
-            <xsl:choose>
-                <xsl:when test="$prepared-isbn-len = (9, 10)">
-                    $1-$2-$3-$4-$5-$6-$7-$8-$9
-                </xsl:when>
-                <xsl:otherwise>
-                    $1-$2-$3-$4-$5-$6-$7-$8-$9-$10-$11-$12
-                </xsl:otherwise>
-            </xsl:choose>
-        </xsl:variable>
-        <xsl:sequence select="
-           fn:tokenize(
-               fn:replace(
-                   $prepared-isbn, 
-                   $replace-str-1, 
-                   $replace-str-2
-               ), 
-               '-'
-           )
-        " />
+        <xsl:sequence select=" 
+            for $codepoint in 
+                fn:string-to-codepoints(
+                    isbn:validate-isbn-length($isbn)
+                )
+            return 
+                fn:codepoints-to-string($codepoint)
+        "/>
     </xsl:function>
 </xsl:stylesheet>
