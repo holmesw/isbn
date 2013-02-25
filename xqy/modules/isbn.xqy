@@ -385,35 +385,24 @@ declare private function validate-isbn-length(
 
 (:~
  : split ISBN into single-length strings
- : uses a regex to do this
+ : 
+ : borrowed from funtx:chars function
+ : @see http://www.xqueryfunctions.com/xq/functx_chars.html
  : 
  : @author holmesw
  : 
  : @param $isbn the ISBN
  : @return some single-length strings
  :)
-declare private function split-isbn(
+declare function isbn:split-isbn(
     $isbn as xs:string
 ) as xs:string* 
 {
-    let $isbn as xs:string := 
-        validate-isbn-length($isbn)
-    let $len as xs:unsignedInt := 
-        fn:string-length($isbn)
-    return
-        fn:tokenize(
-            fn:replace(
-                $isbn, 
-                fn:concat(
-                    "(.{1})(.{1})(.{1})(.{1})(.{1})(.{1})(.{1})(.{1})(.{1})", 
-                    "(.{1})(.{1})(.{1})"[$len = (12, 13)]
-                ), 
-                fn:concat(
-                    "$1-$2-$3-$4-$5-$6-$7-$8-$9", 
-                    "-$10-$11-$12"[$len = (12, 13)]
-                )
-            ), 
-            "-"
-        )
+    for $codepoint as xs:integer in 
+        fn:string-to-codepoints(
+            isbn:validate-isbn-length($isbn)
+        ) 
+    return 
+        fn:codepoints-to-string($codepoint)
 };
 
