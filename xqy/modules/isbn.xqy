@@ -394,13 +394,13 @@ declare private function validate-isbn-length(
  : @param $isbn the ISBN
  : @return some single-length strings
  :)
-declare function isbn:split-isbn(
+declare private function split-isbn(
     $isbn as xs:string
 ) as xs:string* 
 {
     for $codepoint as xs:integer in 
         fn:string-to-codepoints(
-            isbn:validate-isbn-length($isbn)
+            validate-isbn-length($isbn)
         ) 
     return 
         fn:codepoints-to-string($codepoint)
