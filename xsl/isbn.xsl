@@ -182,7 +182,7 @@
                     ) * (10 - $pos + 1) + 
                     isbn:isbn-10-apply-check-digit-weights(
                         $isbn-chars, 
-                        ($pos - 1)
+                        xs:unsignedInt($pos - 1)
                     )
                 " />
             </xsl:when>
@@ -205,7 +205,7 @@
                     ) * ((3, 1)[xs:integer(($pos mod 2) + 1)][1]) + 
                     isbn:isbn-13-apply-check-digit-weights(
                         $isbn-chars, 
-                        ($pos - 1)
+                        xs:unsignedInt($pos - 1)
                     )" />
             </xsl:when>
             <xsl:otherwise>
