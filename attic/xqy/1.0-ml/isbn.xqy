@@ -13,20 +13,9 @@
  : 
  : @author holmesw
  :)
-xquery version "3.0";
+xquery version "1.0-ml";
 
 module namespace isbn = "http://github.com/holmesw/isbn";
-
-declare default function namespace "http://github.com/holmesw/isbn";
-
-declare %private variable $isbn:empty-sequence as function() := 
-    function ($isbn as xs:string) as empty-sequence() {()};
-
-declare %private variable $isbn:format-isbn-13 as function() := 
-    fn:function-lookup(xs:QName("isbn:format-isbn-13"), 1);
-
-declare %private variable $isbn:format-isbn-10 as function() := 
-    fn:function-lookup(xs:QName("isbn:format-isbn-10"), 1);
 
 (:~
  : format ISBN
@@ -40,14 +29,8 @@ declare function format-isbn(
     $isbn as xs:string
 ) as xs:string? 
 {
-    fn:map(
-        select-higher-order-function(
-            $isbn, 
-            $isbn:format-isbn-13, 
-            $isbn:format-isbn-10, 
-            $isbn:empty-sequence
-        ), 
-        prepare-isbn($isbn)
+    format-prepared-isbn(
+      prepare-isbn($isbn)
     )
 };
 
@@ -65,29 +48,36 @@ declare function prepare-isbn(
     $isbn as xs:string
 ) as xs:string? 
 {
-    fn:replace(fn:upper-case($isbn), "(ISBN)?[^0-9A-Za-z]", "")
+    fn:replace($isbn, "(ISBN)?[^0-9A-Za-z]", "")
 };
 
 (:~
- : select higher order function 
- : based on ISBN length
+ : format prepared ISBN
  : 
  : @author holmesw
  : 
  : @param $isbn the prepared ISBN
- : @return a function
+ : @return the formatted ISBN
  :)
-declare %private function select-higher-order-function(
-    $isbn as xs:string, 
-    $fn-13 as function(), 
-    $fn-10 as function(), 
-    $default as function()
-) as function() 
+declare private function format-prepared-isbn(
+    $isbn as xs:string
+) as xs:string? 
 {
-    switch (fn:string-length(prepare-isbn($isbn)))
-        case xs:integer(13) return $fn-13
-        case xs:integer(10) return $fn-10
-        default return $default
+    xdmp:apply(
+        xdmp:function(
+            xs:QName(
+                fn:concat(
+                    "isbn:format-isbn-", 
+                    fn:string(
+                        fn:string-length(
+                            $isbn
+                        )
+                    )
+                )
+            )
+        )[fn:string-length($isbn) = (10, 13)], 
+        $isbn
+    )
 };
 
 (:~
@@ -99,7 +89,7 @@ declare %private function select-higher-order-function(
  : @param $isbn the ISBN-13
  : @return the formatted ISBN-13
  :)
-declare %private function format-isbn-13(
+declare private function format-isbn-13(
     $isbn as xs:string
 ) as xs:string? 
 {
@@ -118,7 +108,7 @@ declare %private function format-isbn-13(
  : @param $isbn the ISBN-10
  : @return the formatted ISBN-10
  :)
-declare %private function format-isbn-10(
+declare private function format-isbn-10(
     $isbn as xs:string
 ) as xs:string? 
 {
@@ -170,35 +160,6 @@ declare function isbn10-to-isbn13(
     )
 };
 
-declare %private variable $isbn:isbn-13-check-digit as function() := 
-    fn:function-lookup(xs:QName("isbn:isbn-13-check-digit"), 1);
-
-declare %private variable $isbn:isbn-10-check-digit as function() := 
-    fn:function-lookup(xs:QName("isbn:isbn-10-check-digit"), 1);
-
-(:~
- : ISBN Check Digit
- : 
- : @author holmesw
- : 
- : @param $isbn the ISBN
- : @return the ISBN check digit
- :)
-declare function isbn-check-digit(
-    $isbn as xs:string 
-) as xs:string? 
-{
-    fn:map(
-        select-higher-order-function(
-            $isbn, 
-            $isbn:isbn-13-check-digit, 
-            $isbn:isbn-10-check-digit, 
-            $isbn:empty-sequence
-        ), 
-        $isbn
-    )
-};
-
 (:~
  : ISBN 13 Check Digit
  : 
@@ -215,11 +176,15 @@ declare function isbn-13-check-digit(
 {
     isbn-13-check-digit-display(
         10 - (
-            isbn-13-apply-check-digit-weights(
-                split-isbn(
-                    isbn-12($isbn)
-                ), 
-                xs:unsignedInt(12)
+            fn:sum(
+                isbn-13-apply-check-digit-weights(
+                    split-isbn(
+                        isbn-12(
+                            $isbn
+                        )
+                    ), 
+                    xs:unsignedInt(12)
+                )
             ) mod 10
         )
     )
@@ -233,7 +198,7 @@ declare function isbn-13-check-digit(
  : @param $checkdigit the ISBN-13 check digit
  : @return the ISBN-13 check digit
  :)
-declare %private function isbn-13-check-digit-display(
+declare private function isbn-13-check-digit-display(
     $checkdigit as xs:double 
 ) as xs:string? 
 {
@@ -257,11 +222,15 @@ declare function isbn-10-check-digit(
 {
     isbn-10-check-digit-display(
         11 - (
-            isbn-10-apply-check-digit-weights(
-                split-isbn(
-                    isbn-9($isbn)
-                ), 
-                xs:unsignedInt(9)
+            fn:sum(
+                isbn-10-apply-check-digit-weights(
+                    split-isbn(
+                        isbn-9(
+                            $isbn
+                        )
+                    ), 
+                    xs:unsignedInt(9)
+                )
             ) mod 11
         )
     )
@@ -275,7 +244,7 @@ declare function isbn-10-check-digit(
  : @param $checkdigit the ISBN-10 check digit
  : @return the ISBN-10 check digit
  :)
-declare %private function isbn-10-check-digit-display(
+declare private function isbn-10-check-digit-display(
     $checkdigit as xs:double 
 ) as xs:string? 
 {
@@ -292,7 +261,7 @@ declare %private function isbn-10-check-digit-display(
  : @param $isbn the ISBN
  : @return the ISBN9 string
  :)
-declare %private function isbn-9(
+declare private function isbn-9(
     $isbn as xs:string 
 ) as xs:string? 
 {
@@ -314,7 +283,7 @@ declare %private function isbn-9(
  : @param $isbn the ISBN
  : @return the ISBN9 string
  :)
-declare %private function isbn-12(
+declare private function isbn-12(
     $isbn as xs:string 
 ) as xs:string? 
 {
@@ -339,7 +308,7 @@ declare %private function isbn-12(
  : @param $isbn the ISBN
  : @return some numbers
  :)
-declare %private function isbn-10-apply-check-digit-weights(
+declare private function isbn-10-apply-check-digit-weights(
     $isbn-chars as xs:string*, 
     $pos as xs:unsignedInt
 ) as xs:double 
@@ -373,7 +342,7 @@ declare %private function isbn-10-apply-check-digit-weights(
  : @param $isbn the ISBN
  : @return some numbers
  :)
-declare %private function isbn-13-apply-check-digit-weights(
+declare private function isbn-13-apply-check-digit-weights(
     $isbn-chars as xs:string*, 
     $pos as xs:unsignedInt
 ) as xs:double* 
@@ -408,7 +377,7 @@ declare %private function isbn-13-apply-check-digit-weights(
  : @param $isbn the ISBN
  : @return ISBN
  :)
-declare %private function validate-isbn-length(
+declare private function validate-isbn-length(
     $isbn as xs:string
 ) as xs:string 
 {
@@ -422,7 +391,7 @@ declare %private function validate-isbn-length(
 (:~
  : split ISBN into single-length strings
  : 
- : borrowed from functx:chars function
+ : borrowed from funtx:chars function
  : @see http://www.xqueryfunctions.com/xq/functx_chars.html
  : 
  : @author holmesw
@@ -430,7 +399,7 @@ declare %private function validate-isbn-length(
  : @param $isbn the ISBN
  : @return some single-length strings
  :)
-declare %private function split-isbn(
+declare private function split-isbn(
     $isbn as xs:string
 ) as xs:string* 
 {
@@ -442,51 +411,3 @@ declare %private function split-isbn(
         fn:codepoints-to-string($codepoint)
 };
 
-(:~
- : ensure ISBN is valid length and ends with check digit
- : 
- : @author holmesw
- : 
- : @param $isbn the ISBN
- : @return true/false
- :)
-declare function is-valid-isbn(
-    $isbn as xs:string
-) as xs:boolean 
-{
-    is-valid-isbn-length($isbn) and 
-    is-valid-isbn-check-digit($isbn)
-};
-
-(:~
- : ensure ISBN is valid length (10 or 13 chars)
- : 
- : @author holmesw
- : 
- : @param $isbn the ISBN
- : @return true/false
- :)
-declare %private function is-valid-isbn-length(
-    $isbn as xs:string
-) as xs:boolean 
-{
-    fn:string-length(prepare-isbn($isbn)) = (10, 13)
-};
-
-(:~
- : ensure ISBN ends with valid check digit
- : 
- : @author holmesw
- : 
- : @param $isbn the ISBN
- : @return true/false
- :)
-declare %private function is-valid-isbn-check-digit(
-    $isbn as xs:string
-) as xs:boolean 
-{
-    fn:ends-with(
-        prepare-isbn($isbn), 
-        isbn-check-digit($isbn)
-    )
-};
