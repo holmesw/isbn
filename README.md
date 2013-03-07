@@ -1,4 +1,4 @@
-#XQuery 1.0-ml and XSLT 2.0 ISBN Function Library#
+#XQuery 3.0 and XSLT 2.0 ISBN Function Library#
 
 ISBNs (or International Standard Book Numbers), are used to identify books.  
 
@@ -14,7 +14,7 @@ This function library contains functions to:
 To use the ISBN XQuery functions, first import the isbn.xqy module into the desired main module or library module of your XQuery code base: 
 
 ```xquery
-    xquery version "1.0-ml";
+    xquery version "3.0";
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
 ```
@@ -34,7 +34,7 @@ This means that 9781234567897 is formatted as: 978-1-23456-789-7
 Here is an example of how to format an ISBN (10 or 13 digit): 
 
 ```xquery
-    xquery version "1.0-ml";
+    xquery version "3.0";
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
     
@@ -60,7 +60,7 @@ This is helpful when calculating the check digit.
 Here is an example of how to remove the formatting for an ISBN (10 or 13 digit): 
 
 ```xquery
-    xquery version "1.0-ml";
+    xquery version "3.0";
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
     
@@ -94,7 +94,7 @@ The above examples came from this [hahnlibrary ISBN Check Digit Calculator](http
 Here is an example of how to calculate the check digit for an ISBN (10 or 13 digit): 
 
 ```xquery
-    xquery version "1.0-ml";
+    xquery version "3.0";
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
     
@@ -118,7 +118,7 @@ The **ISBN-13** version of an ISBN-10 is "978", then take the first 9 digits of 
 Here is an example of how to convert ISBN-10 to ISBN-13: 
 
 ```xquery
-    xquery version "1.0-ml";
+    xquery version "3.0";
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
     
@@ -136,7 +136,7 @@ To convert ISBN-13 to **ISBN-10**, first remove the first three digits (usually 
 Here is an example of how to convert ISBN-13 to ISBN-10: 
 
 ```xquery
-    xquery version "1.0-ml";
+    xquery version "3.0";
     
     import module namespace isbn = "http://github.com/holmesw/isbn" at "/xqy/modules/isbn.xqy";
     
