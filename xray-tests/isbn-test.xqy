@@ -1,6 +1,7 @@
 xquery version "1.0-ml";
 
-module namespace test = "http://github.com/robwhitby/xray/test";
+module namespace test = 
+    "http://github.com/robwhitby/xray/test";
 
 import module namespace isbn = 
     "http://github.com/holmesw/isbn" at 
@@ -55,6 +56,14 @@ declare function isbn-check-digit-isbn13-formatted()
     assert:equal(
         text { isbn:isbn-13-check-digit("978-1-23456-789-7") }, 
         text { "7" }
+    )
+};
+
+declare function isbn-check-digit-isbn13-zero() 
+{
+    assert:equal(
+        text { isbn:isbn-13-check-digit("9780992647100") }, 
+        text { "0" }
     )
 };
 
