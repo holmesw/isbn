@@ -91,21 +91,30 @@
     
     <xsl:function name="isbn:isbn-13-check-digit" as="xs:string?">
         <xsl:param name="isbn" as="xs:string" />
-        <xsl:sequence select='
-            isbn:isbn-13-check-digit-display(
-                10 - 
-                (
-                    fn:sum(
-                        isbn:isbn-13-apply-check-digit-weights(
-                            isbn:split-isbn(
-                                isbn:isbn-12($isbn)
-                            ),
-                            xs:unsignedInt(12)
-                        )
-                    ) mod 10
-                )
+        <xsl:variable name="check-digit" as="xs:double">
+          <xsl:sequence select='
+            (
+                fn:sum(
+                    isbn:isbn-13-apply-check-digit-weights(
+                        isbn:split-isbn(
+                            isbn:isbn-12($isbn)
+                        ),
+                        xs:unsignedInt(12)
+                    )
+                ) mod 10
             )
-        ' />
+          ' />
+        </xsl:variable>
+        <xsl:choose>
+            <xsl:when test="$check-digit eq 0">0</xsl:when>
+            <xsl:otherwise>
+                <xsl:sequence select='
+                    isbn:isbn-13-check-digit-display(
+                        10 - $check-digit
+                    )
+                ' />
+            </xsl:otherwise>
+        </xsl:choose>
     </xsl:function>
     
     <xsl:function name="isbn:isbn-13-check-digit-display" as="xs:string?">
