@@ -214,14 +214,18 @@ declare function isbn-13-check-digit(
 ) as xs:string? 
 {
     isbn-13-check-digit-display(
-        10 - (
-            isbn-13-apply-check-digit-weights(
-                split-isbn(
-                    isbn-12($isbn)
-                ), 
-                xs:unsignedInt(12)
-            ) mod 10
-        )
+        let $check-digit as xs:unsignedLong := 
+            xs:unsignedLong(
+                isbn-13-apply-check-digit-weights(
+                    split-isbn(
+                        isbn-12($isbn)
+                    ), 
+                    xs:unsignedInt(12)
+                ) mod 10
+            )
+        return
+            if ($check-digit eq 0) then 0
+            else 10 - $check-digit
     )
 };
 
