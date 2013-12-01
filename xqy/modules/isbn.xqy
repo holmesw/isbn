@@ -19,13 +19,13 @@ module namespace isbn = "http://github.com/holmesw/isbn";
 
 declare default function namespace "http://github.com/holmesw/isbn";
 
-declare %private variable $isbn:empty-sequence as function() := 
+declare %private variable $isbn:empty-sequence as function(*) := 
     function ($isbn as xs:string) as empty-sequence() {()};
 
-declare %private variable $isbn:format-isbn-13 as function() := 
+declare %private variable $isbn:format-isbn-13 as function(*) := 
     fn:function-lookup(xs:QName("isbn:format-isbn-13"), 1);
 
-declare %private variable $isbn:format-isbn-10 as function() := 
+declare %private variable $isbn:format-isbn-10 as function(*) := 
     fn:function-lookup(xs:QName("isbn:format-isbn-10"), 1);
 
 (:~
@@ -79,10 +79,10 @@ declare function prepare-isbn(
  :)
 declare %private function select-higher-order-function(
     $isbn as xs:string, 
-    $fn-13 as function(), 
-    $fn-10 as function(), 
-    $default as function()
-) as function() 
+    $fn-13 as function(*), 
+    $fn-10 as function(*), 
+    $default as function(*)
+) as function(*) 
 {
     switch (fn:string-length(prepare-isbn($isbn)))
         case xs:integer(13) return $fn-13
@@ -170,10 +170,10 @@ declare function isbn10-to-isbn13(
     )
 };
 
-declare %private variable $isbn:isbn-13-check-digit as function() := 
+declare %private variable $isbn:isbn-13-check-digit as function(*) := 
     fn:function-lookup(xs:QName("isbn:isbn-13-check-digit"), 1);
 
-declare %private variable $isbn:isbn-10-check-digit as function() := 
+declare %private variable $isbn:isbn-10-check-digit as function(*) := 
     fn:function-lookup(xs:QName("isbn:isbn-10-check-digit"), 1);
 
 (:~
