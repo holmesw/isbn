@@ -43,7 +43,7 @@
     
     <xsl:function name="isbn:format-isbn-13" as="xs:string?">
         <xsl:param name="isbn" as="xs:string" />
-        <xsl:if test='fn:starts-with($isbn, "978")'>
+        <xsl:if test='fn:starts-with($isbn, "978") or fn:starts-with($isbn, "979")'>
             <xsl:value-of select='
                 fn:replace(
                     $isbn, 
