@@ -102,7 +102,7 @@ declare %private function format-isbn-13(
 {
     (: 13 digit ISBN code :)
     fn:replace($isbn, "(.{3})(.{1})(.{5})(.{3})(.{1})", "$1-$2-$3-$4-$5")[
-        fn:starts-with($isbn, "978")
+        fn:starts-with($isbn, "978") or fn:starts-with($isbn, "979")
     ]
 };
 
