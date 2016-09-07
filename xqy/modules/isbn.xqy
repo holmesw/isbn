@@ -40,15 +40,12 @@ declare function format-isbn(
     $isbn as xs:string
 ) as xs:string? 
 {
-    fn:map(
-        select-higher-order-function(
-            $isbn, 
-            $isbn:format-isbn-13, 
-            $isbn:format-isbn-10, 
-            $isbn:empty-sequence
-        ), 
-        prepare-isbn($isbn)
-    )
+    select-higher-order-function(
+        $isbn, 
+        $isbn:format-isbn-13, 
+        $isbn:format-isbn-10, 
+        $isbn:empty-sequence
+    ) ( prepare-isbn($isbn) )
 };
 
 (:~
@@ -188,15 +185,12 @@ declare function isbn-check-digit(
     $isbn as xs:string 
 ) as xs:string? 
 {
-    fn:map(
-        select-higher-order-function(
-            $isbn, 
-            $isbn:isbn-13-check-digit, 
-            $isbn:isbn-10-check-digit, 
-            $isbn:empty-sequence
-        ), 
-        $isbn
-    )
+    select-higher-order-function(
+        $isbn, 
+        $isbn:isbn-13-check-digit, 
+        $isbn:isbn-10-check-digit, 
+        $isbn:empty-sequence
+    ) ( $isbn )
 };
 
 (:~
